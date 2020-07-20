@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  monorepo:
+    images: cenk1cenk2/lerna-dev
+    environment:
+      - PACKAGE_START_COMMAND=dev:start # default
+      - DEBUG_PORT_START=9229
+      - INIT_ENV_FORCE_INSTALL= # default
+      - INIT_ENV_COMMAND= # default
+      - SERVICES=packages/service1,off,override='start':packages/service2,override='dev':packages/services3:packages/service4
+      - RUN_IN_BAND=packages/service3:packages/service4
+      - RUN_IN_BAND_WAIT=10 # default
+    ports:
+    # ANY PORTS THAT NEEDS TO BE EXPORTED
+    # - 3000-3010:3000:3010
+    # DEBUG PORTS IF DESIRED
+    # - 9229-9239:9229-9239
+    volumes:
+      - .:/data/app
