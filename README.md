@@ -18,6 +18,12 @@
 
 Runs a [lerna](git@github.com:lerna/lerna.git) development environment inside a Docker container. This container automatically generates `run` files for [s6-overlay](https://github.com/just-containers/s6-overlay) depending on environment variables.
 
+# Image
+
+Latest uses the last node version, for now it is 14. `cenk1cenk2/lerna-dev:latest`
+
+You can also select from available images below. `[latest, 12, 14]`
+
 # Steps
 
 1. Installs root dependencies.
