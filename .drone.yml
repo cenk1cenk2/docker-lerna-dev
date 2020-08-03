@@ -40,6 +40,31 @@ steps:
         from_secret: docker_username
       password:
         from_secret: docker_password
+      tags:
+        - 12
+    environment:
+      NODE_VERSION: "12"
+    when:
+      event:
+        - push
+        - cron
+      branch:
+        - master
+
+  - name: publish
+    image: plugins/docker
+    working_dir: /drone/src/build
+    settings:
+      repo: cenk1cenk2/lerna-dev
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - latest
+        - 14
+    environment:
+      NODE_VERSION: "14"
     when:
       event:
         - push

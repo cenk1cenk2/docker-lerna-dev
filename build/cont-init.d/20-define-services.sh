@@ -14,7 +14,7 @@ fi
 
 echo "${SEPERATOR}"
 for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
-  # Get service optionsi
+  # Get service options
   SERVICE_ARRAY=($(echo "${SERVICE}" | sed "s/,/ /g"))
   SERVICE_PATH=${SERVICE_ARRAY[0]}
   SERVICE_DIR_SAFE=$(echo "${SERVICE_PATH}" | sed -r "s/\//_/g")
@@ -31,6 +31,8 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     # Create the service directory
     mkdir -p /etc/services.d/${SERVICE_DIR_SAFE}
     printf "#!/bin/bash
+
+    set -eo pipefail
 
     # If execution order is set
     if [[ ! -z \${RUN_IN_BAND} ]]; then
@@ -58,6 +60,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     # Get directory env variables if exists
     if [[ -f .env ]]; then
+      echo \"source ${SERVICE_PATH}/.env for given scope.\"
       source .env
     fi
 
@@ -65,7 +68,11 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     echo -e '${SEPERATOR}\n[start] ${SERVICE_PATH}\n${SEPERATOR}'
 
     # Package start command
-    DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}
+    if [[ ${PREFIX_LABEL:-'true'} == true ]]; then
+      fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${SERVICE_PATH}] \" \$0}'
+    else
+      fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\"
+    fi
 
     # For run in band on crash
     if [[ -f /.lock ]]; then

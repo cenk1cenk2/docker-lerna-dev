@@ -46,6 +46,7 @@ What I did not want to do is automatically detecting packages, because I usually
 | INIT_ENV_FORCE_INSTALL              | If the node_modules directory is present, it will not try to do an install. But you can override this by setting this variable to not empty.          |           |          |
 | INIT_ENV_COMMAND                    | You can run a command before starting to run the packages.                                                                                            |           |          |
 | SERVICES                            | Define packages and their root directories relative to root of the project. [**Has overrides.**](<#(Services-Overrides)>)                             |           |          |
+| PREFIX_LABEL                        | Prefixes label to the service name to get distinction.                                                                                                | true      |          |
 | RUN_IN_BAND                         | Run this packages first before running the rest asynchronously. [**Has to match the relative directory of the service.**](<#(Run-In-Band-Overrides)>) |           |          |
 | RUN_IN_BAND_WAIT                    | Wait for RUN_IN_BAND items to compelete in seconds.                                                                                                   | 10        |          |
 

@@ -1,4 +1,6 @@
-FROM node:14-alpine
+ARG NODE_VERSION
+
+FROM node:${NODE_VERSION}-alpine
 
 # Package Start Command for the API
 ENV S6_VERSION 1.21.8.0
