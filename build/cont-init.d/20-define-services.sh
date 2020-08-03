@@ -57,7 +57,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     cd /data/app/${SERVICE_PATH}
 
     # Get directory env variables if exists
-    if [[ -d .env ]]; then
+    if [[ -f .env ]]; then
       source .env
     fi
 
