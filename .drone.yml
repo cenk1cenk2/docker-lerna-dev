@@ -42,8 +42,8 @@ steps:
         from_secret: docker_password
       tags:
         - 12
-    environment:
-      NODE_VERSION: "12"
+      build_args:
+        NODE_VERSION: "12"
     depends_on:
       - semantic-release
     when:
@@ -65,8 +65,8 @@ steps:
       tags:
         - latest
         - 14
-    environment:
-      NODE_VERSION: "14"
+      build_args:
+        NODE_VERSION: "14"
     depends_on:
       - semantic-release
     when:
