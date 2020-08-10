@@ -17,7 +17,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
   # Get service options
   SERVICE_ARRAY=($(echo "${SERVICE}" | sed "s/,/ /g"))
   SERVICE_PATH=${SERVICE_ARRAY[0]}
-  SERVICE_DIR_SAFE=$(echo "${SERVICE_PATH}" | sed -r "s/\//_/g")
+  SERVICE_DIR_SAFE=$(echo "${SERVICE_PATH}" | sed -r "s/[\.\*\\\/]/_/g")
   SERVICE_OPTIONS=$(echo "${SERVICE_ARRAY[@]:1}")
 
   # check for options
