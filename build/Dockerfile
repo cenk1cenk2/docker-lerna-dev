@@ -6,7 +6,7 @@ FROM node:${NODE_VERSION}-alpine
 ENV S6_VERSION 1.21.8.0
 
 # Install bash
-RUN apk add --no-cache --no-progress bash
+RUN apk add --no-cache --no-progress bash git
 
 # Install s6 overlay
 ADD https://github.com/just-containers/s6-overlay/releases/download/v${S6_VERSION}/s6-overlay-amd64.tar.gz /tmp/
