@@ -72,10 +72,10 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     log_start '${SERVICE_PATH}' 'top'
 
     # Package start command
-    if [[ "${NO_LOG:-false}" != 'false' ]]; then
+    if [[ '${NO_LOG:-'false'}' != 'false' ]]; then
       log_warn '[${CYAN}NO_LOG${RESET}]: ${SERVICE_PATH}'
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND} > /dev/null 2&>1\"
-    elif [[ ${PREFIX_LABEL:-'true'} == true ]]; then
+    elif [[ ${PREFIX_LABEL:-'true'} == 'true' ]]; then
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${GREEN}${SERVICE_PATH}${RESET}] \" \$0}'
     else
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\"
