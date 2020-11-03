@@ -38,8 +38,8 @@ log_debug() {
 
 log_this() {
   INFO="${1}"
-  SCOPE="${2}"
-  SEPERATOR_INSERT="${3}"
+  SCOPE="${2:-}"
+  SEPERATOR_INSERT="${3:-}"
 
   DATA="${INFO}"
 
@@ -61,43 +61,43 @@ log_this() {
 }
 
 log_start() {
-  log_this "${1}" "${GREEN}START${RESET}" "${2}"
+  log_this "${1}" "${GREEN}START${RESET}" "${2:-}"
 }
 
 log_finish() {
-  log_this "${1}" "${GREEN}FINISH${RESET}" "${2}"
+  log_this "${1}" "${GREEN}FINISH${RESET}" "${2:-}"
 }
 
 log_error() {
-  log_this "${1}" "${RED}ERROR${RESET}" "${2}"
+  log_this "${1}" "${RED}ERROR${RESET}" "${2:-}"
 }
 
 log_warn() {
-  log_this "${1}" "${YELLOW}WARN${RESET}" "${2}"
+  log_this "${1}" "${YELLOW}WARN${RESET}" "${2:-}"
 }
 
 log_info() {
-  log_this "${1}" "${CYAN}INFO${RESET}" "${2}"
+  log_this "${1}" "${CYAN}INFO${RESET}" "${2:-}"
 }
 
 log_interrupt() {
-  log_this "${1}" "${RED}INTERRUPT${RESET}" "${2}"
+  log_this "${1}" "${RED}INTERRUPT${RESET}" "${2:-}"
 }
 
 log_skip() {
-  log_this "${1}" "${YELLOW}SKIP${RESET}" "${2}"
+  log_this "${1}" "${YELLOW}SKIP${RESET}" "${2:-}"
 }
 
 log_add() {
-  log_this "${1}" "${CYAN}ADD${RESET}" "${2}"
+  log_this "${1}" "${CYAN}ADD${RESET}" "${2:-}"
 }
 
 log_supervisor() {
-  log_this "${1}" "${CYAN}SUPERVISOR${RESET}" "${2}"
+  log_this "${1}" "${CYAN}SUPERVISOR${RESET}" "${2:-}"
 }
 
 log_wait() {
-  log_this "${1}" "${YELLOW}WAIT${RESET}" "${2}"
+  log_this "${1}" "${YELLOW}WAIT${RESET}" "${2:-}"
 }
 
 ########## END-OF common.sh
