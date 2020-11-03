@@ -71,6 +71,7 @@ You can create a dev:start command for your packages like 'node --inspect=0.0.0.
 - Package should have a relative path to the root of the repository.
 - Overrides can be added by spliting them with comma `,`.
   - `off` override disables the package temporarily.
+  - `no_log`, will disable log capability for this process.
   - `override='*'`, will change the `npm/yarn run` command can override the default command.
 
 **Example**

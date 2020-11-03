@@ -6,12 +6,14 @@ source /scripts/logger.sh
 # Clean up all services
 rm -r /etc/services.d && mkdir -p /etc/services.d
 
+log_divider
+log_this "Creating multiple node.js instances..." "${YELLOW}docker-lerna-dev${RESET}"
+
 if [[ ! -z ${RUN_IN_BAND} ]]; then
   log_supervisor "RUN_IN_BAND set will run in sequential mode."
   echo "RUN_IN_BAND_ITEM=0" >/.lock
 fi
 
-echo "${SEPERATOR}"
 for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
   # Get service options
   SERVICE_ARRAY=($(echo "${SERVICE}" | sed "s/,/ /g"))
@@ -21,6 +23,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
   # check for options
   OFF=$(echo "${SERVICE_OPTIONS[@]}" | grep -q off || grep -q OFF)
+  NO_LOG=$(echo "${SERVICE_OPTIONS[@]}" | grep -q NO_LOG || grep -q no_log)
   PACKAGE_START_OVERRIDE=$(echo "${SERVICE_OPTIONS[@]}" | grep -o -E "override=('|\")?(.*)('|\")?" | sed -r "s/override=('|\")?(.*)('|\")?/\2/g")
 
   if [[ -z "${OFF}" ]]; then
@@ -50,7 +53,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
             RUN_IN_BAND_DAVAI=1
           fi
         else
-          log_wait '${SERVICE_PATH}' 'both'
+          log_wait '${SERVICE_PATH}' 'top'
           s6-sleep ${RUN_IN_BAND_WAIT:-10}
         fi
       done
@@ -66,10 +69,12 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     fi
 
     # For more distinction
-    log_start '${SERVICE_PATH}' 'both'
+    log_start '${SERVICE_PATH}' 'top'
 
     # Package start command
-    if [[ ${PREFIX_LABEL:-'true'} == true ]]; then
+    if [[ ! -z "${NO_LOG}" ]]; then
+      fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND} > /dev/null 2&>1\"
+    elif [[ ${PREFIX_LABEL:-'true'} == true ]]; then
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${GREEN}${SERVICE_PATH}${RESET}] \" \$0}'
     else
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\"
