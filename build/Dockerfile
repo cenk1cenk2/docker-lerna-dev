@@ -18,6 +18,7 @@ WORKDIR /data/app
 
 # Move s6 supervisor files inside the container
 COPY ./cont-init.d /etc/cont-init.d
+COPY ./scripts /scripts
 
 # Create common s6 env variable
 RUN touch .env

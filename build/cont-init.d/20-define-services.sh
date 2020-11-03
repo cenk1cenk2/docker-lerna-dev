@@ -1,14 +1,13 @@
 #!/bin/bash
 
-SEPERATOR="------------------------"
-
 source /.env
+source /scripts/logger.sh
 
 # Clean up all services
 rm -r /etc/services.d && mkdir -p /etc/services.d
 
 if [[ ! -z ${RUN_IN_BAND} ]]; then
-  echo -e "[supervisor] RUN_IN_BAND set will run in sequential mode."
+  log_supervisor "RUN_IN_BAND set will run in sequential mode."
   echo "RUN_IN_BAND_ITEM=0" >/.lock
 fi
 
@@ -34,6 +33,8 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     set -eo pipefail
 
+    source /scripts/logger.sh
+
     # If execution order is set
     if [[ ! -z \${RUN_IN_BAND} ]]; then
       RUN_IN_BAND=($(echo "${RUN_IN_BAND}" | sed "s/:/ /g"))
@@ -43,13 +44,13 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
           if [[ \${#RUN_IN_BAND[@]} -eq \$((\${RUN_IN_BAND_ITEM} + 1)) ]]; then
             s6-sleep ${RUN_IN_BAND_WAIT:-10}
             rm /.lock
-            echo '${SEPERATOR}\n[supervisor] Removing lock file, no more in queue.\n${SEPERATOR}'
+            log_supervisor 'Removing lock file. Queue is empty.' 'top'
           else
             echo \"RUN_IN_BAND_ITEM=\$((\${RUN_IN_BAND_ITEM} + 1))\" >/.lock
             RUN_IN_BAND_DAVAI=1
           fi
         else
-          echo -e '${SEPERATOR}\n[wait] ${SERVICE_PATH}\n${SEPERATOR}'
+          log_wait '${SERVICE_PATH}' 'both'
           s6-sleep ${RUN_IN_BAND_WAIT:-10}
         fi
       done
@@ -60,16 +61,16 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     # Get directory env variables if exists
     if [[ -f .env ]]; then
-      echo \"source ${SERVICE_PATH}/.env for given scope.\"
+      log_info \"source ${SERVICE_PATH}/.env for given scope.\"
       source .env
     fi
 
     # For more distinction
-    echo -e '${SEPERATOR}\n[start] ${SERVICE_PATH}\n${SEPERATOR}'
+    log_start '${SERVICE_PATH}' 'both'
 
     # Package start command
     if [[ ${PREFIX_LABEL:-'true'} == true ]]; then
-      fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${SERVICE_PATH}] \" \$0}'
+      fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${GREEN}${SERVICE_PATH}${RESET}] \" \$0}'
     else
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\"
     fi
@@ -80,7 +81,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     fi
 
     # For more distinction
-    echo -e '${SEPERATOR}\n[crash] ${SERVICE_PATH}\n${SEPERATOR}'
+    log_error '${SERVICE_PATH}' 'both'
 
     s6-sleep 5
     " >/etc/services.d/${SERVICE_DIR_SAFE}/run
@@ -91,9 +92,8 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     chmod +x /etc/services.d/${SERVICE_DIR_SAFE}/run
 
-    echo "[add] ${SERVICE_PATH}@/etc/services.d/${SERVICE_DIR_SAFE}."
+    log_add "${SERVICE_PATH}@/etc/services.d/${SERVICE_DIR_SAFE}."
   else
-    echo "[skipping] [off] ${SERVICE_PATH}."
+    log_skip "[${RED}OFF${RESET}]: ${SERVICE_PATH}"
   fi
 done
-echo "${SEPERATOR}"
