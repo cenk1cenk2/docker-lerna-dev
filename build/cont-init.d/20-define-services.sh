@@ -64,7 +64,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     # Get directory env variables if exists
     if [[ -f .env ]]; then
-      log_info \"source ${SERVICE_PATH}/.env for given scope.\"
+      log_info \"[${CYAN}SOURCE${RESET}] ${SERVICE_PATH}/.env for given scope.\"
       source .env
     fi
 
@@ -72,7 +72,8 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     log_start '${SERVICE_PATH}' 'top'
 
     # Package start command
-    if [[ ! -z "${NO_LOG}" ]]; then
+    if [[ "${NO_LOG:-false}" != 'false' ]]; then
+      log_warn '[${CYAN}NO_LOG${RESET}]: ${SERVICE_PATH}'
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND} > /dev/null 2&>1\"
     elif [[ ${PREFIX_LABEL:-'true'} == true ]]; then
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND}\" | awk '{print \"[${GREEN}${SERVICE_PATH}${RESET}] \" \$0}'
@@ -86,7 +87,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     fi
 
     # For more distinction
-    log_error '${SERVICE_PATH}' 'both'
+    log_error '${SERVICE_PATH}' 'top'
 
     s6-sleep 5
     " >/etc/services.d/${SERVICE_DIR_SAFE}/run
@@ -99,6 +100,6 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
 
     log_add "${SERVICE_PATH}@/etc/services.d/${SERVICE_DIR_SAFE}."
   else
-    log_skip "[${RED}OFF${RESET}]: ${SERVICE_PATH}"
+    log_skip "[${CYAN}OFF${RESET}]: ${SERVICE_PATH}"
   fi
 done
