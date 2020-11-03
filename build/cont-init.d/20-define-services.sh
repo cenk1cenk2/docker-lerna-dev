@@ -22,8 +22,8 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
   SERVICE_OPTIONS=$(echo "${SERVICE_ARRAY[@]:1}")
 
   # check for options
-  OFF=$(echo "${SERVICE_OPTIONS[@]}" | grep -q off || grep -q OFF)
-  NO_LOG=$(echo "${SERVICE_OPTIONS[@]}" | grep -q NO_LOG || grep -q no_log)
+  OFF=$(echo "${SERVICE_OPTIONS[@]}" | grep -q off && echo "true")
+  NO_LOG=$(echo "${SERVICE_OPTIONS[@]}" | grep -q no_log && echo "true")
   PACKAGE_START_OVERRIDE=$(echo "${SERVICE_OPTIONS[@]}" | grep -o -E "override=('|\")?(.*)('|\")?" | sed -r "s/override=('|\")?(.*)('|\")?/\2/g")
 
   if [[ -z "${OFF}" ]]; then
@@ -72,7 +72,7 @@ for SERVICE in $(echo "${SERVICES}" | sed -r "s/:/ /g"); do
     log_start '${SERVICE_PATH}' 'top'
 
     # Package start command
-    if [[ '${NO_LOG:-'false'}' != 'false' ]]; then
+    if [[ '${NO_LOG:-'false'}' == 'true' ]]; then
       log_warn '[${CYAN}NO_LOG${RESET}]: ${SERVICE_PATH}'
       fdmove -c 2 1 /bin/bash -c \"DEBUG_PORT=${DEBUG_PORT} yarn ${FINAL_START_COMMAND} > /dev/null 2&>1\"
     elif [[ ${PREFIX_LABEL:-'true'} == 'true' ]]; then

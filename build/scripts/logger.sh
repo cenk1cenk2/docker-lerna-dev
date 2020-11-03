@@ -101,7 +101,7 @@ log_wait() {
 }
 
 log_divider() {
-  log_this "" "" "top"
+  stdout_print "${SEPERATOR}"
 }
 
 ########## END-OF common.sh
