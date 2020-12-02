@@ -12,6 +12,6 @@ echo "DEBUG_PORT=${DEBUG_PORT_START:-9229}" >>/.env
 
 log_finish "Container variables generated."
 
-log_info "node version: [$(node -v)]"
-log_info "npm version: [$(npm -v)]"
-log_info "yarn version: [$(yarn -v)]"
+log_this "node: [$(node -v)]" "${CYAN}VERSION${RESET}"
+log_this "npm: [$(npm -v)]" "${CYAN}VERSION${RESET}"
+log_this "yarn: [$(yarn -v)]" "${CYAN}VERSION${RESET}"
