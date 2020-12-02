@@ -10,5 +10,5 @@ if [ ! -d 'node_modules' ] || [ ! -z "${INIT_ENV_FORCE_INSTALL}" ]; then
 fi
 
 if [ ! -z "${INIT_ENV_COMMAND}" ]; then
-  ${INIT_ENV_COMMAND} || log_error "Init command failed." && exit 127
+  eval ${INIT_ENV_COMMAND} || log_error "Init command failed." && exit 127
 fi
