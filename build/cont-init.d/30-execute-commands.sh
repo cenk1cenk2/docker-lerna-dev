@@ -3,5 +3,7 @@
 source /scripts/logger.sh
 
 if [ ! -z "${INIT_ENV_COMMAND}" ]; then
-  eval ${INIT_ENV_COMMAND} || log_error "Init command failed." && exit 127
+  log_start "\$ ${INIT_ENV_COMMAND}"
+  eval ${INIT_ENV_COMMAND}
+  log_finish "\$ ${INIT_ENV_COMMAND}"
 fi
