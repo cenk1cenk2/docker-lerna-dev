@@ -11,3 +11,7 @@ echo "PACKAGE_START_COMMAND=${PACKAGE_START_COMMAND:-'dev:start'}" >>/.env
 echo "DEBUG_PORT=${DEBUG_PORT_START:-9229}" >>/.env
 
 log_finish "Container variables generated."
+
+log_info "node version: [$(node -v)]"
+log_info "npm version: [$(npm -v)]"
+log_info "yarn version: [$(yarn -v)]"
