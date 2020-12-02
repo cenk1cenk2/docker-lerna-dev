@@ -21,9 +21,9 @@ Runs a [lerna](git@github.com:lerna/lerna.git) development environment inside a 
 
 # Image
 
-Latest uses the last node version, for now it is 14. `cenk1cenk2/lerna-dev:latest`
+Latest uses the last node version, for now it is 15. `cenk1cenk2/lerna-dev:latest`
 
-You can also select from available images below. `[latest, 12, 14]`
+You can also select from available images below. `[latest, 12, 14, 15]`
 
 # Steps
 
