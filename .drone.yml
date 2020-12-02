@@ -76,3 +76,25 @@ steps:
         - cron
       branch:
         - master
+        
+  - name: publish-15
+    image: plugins/docker
+    working_dir: /drone/src/build
+    settings:
+      repo: cenk1cenk2/lerna-dev
+      username:
+        from_secret: docker_username
+      password:
+        from_secret: docker_password
+      tags:
+        - latest
+      build_args:
+        - NODE_VERSION=15
+    depends_on:
+      - semantic-release
+    when:
+      event:
+        - push
+        - cron
+      branch:
+        - master        
