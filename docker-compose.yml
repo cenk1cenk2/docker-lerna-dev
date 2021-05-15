@@ -10,7 +10,7 @@ services:
       - SERVICES=packages/service1,off,override='start':packages/service2,override='dev':packages/services3:packages/service4
       - RUN_IN_BAND=packages/service3:packages/service4
       - RUN_IN_BAND_WAIT=10 # default
-    ports:
+    # ports:
     # ANY PORTS THAT NEEDS TO BE EXPORTED
     # - 3000-3010:3000:3010
     # DEBUG PORTS IF DESIRED

@@ -21,9 +21,9 @@ Runs a [lerna](git@github.com:lerna/lerna.git) development environment inside a 
 
 # Image
 
-Latest uses the last node version, for now it is 15. `cenk1cenk2/lerna-dev:latest`
+Latest uses the last node version, for now it is 16. `cenk1cenk2/lerna-dev:latest`
 
-You can also select from available images below. `[latest, 12, 14, 15]`
+You can also select from available images below. `[latest, 12, 14, 15, 16]`
 
 # Steps
 
@@ -46,16 +46,16 @@ This Docker container highly depends on environment variables to function proper
 
 What I did not want to do is automatically detecting packages, because I usually disable some of them depending on the occasion.
 
-| Variable                            | Short Description                                                                                                                                     | Default   | Override |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | --------- | -------- |
-| PACKAGE_START_COMMAND               | The default NPM command for running for the package.                                                                                                  | dev:start | yes      |
-| [DEBUG_PORT_START](<#(Debug-Port)>) | Debug port start.                                                                                                                                     | 9229      |          |
-| INIT_ENV_FORCE_INSTALL              | If the node_modules directory is present, it will not try to do an install. But you can override this by setting this variable to not empty.          |           |          |
-| INIT_ENV_COMMAND                    | You can run a command before starting to run the packages.                                                                                            |           |          |
-| SERVICES                            | Define packages and their root directories relative to root of the project. [**Has overrides.**](<#(Services-Overrides)>)                             |           |          |
-| PREFIX_LABEL                        | Prefixes label to the service name to get distinction.                                                                                                | true      |          |
-| RUN_IN_BAND                         | Run this packages first before running the rest asynchronously. [**Has to match the relative directory of the service.**](<#(Run-In-Band-Overrides)>) |           |          |
-| RUN_IN_BAND_WAIT                    | Wait for RUN_IN_BAND items to compelete in seconds.                                                                                                   | 10        |          |
+| Variable | Short Description | Default | Override |
+| --- | --- | --- | --- |
+| PACKAGE_START_COMMAND | The default NPM command for running for the package. | dev:start | yes |
+| [DEBUG_PORT_START](<#(Debug-Port)>) | Debug port start. | 9229 |  |
+| INIT_ENV_FORCE_INSTALL | If the node_modules directory is present, it will not try to do an install. But you can override this by setting this variable to not empty. |  |  |
+| INIT_ENV_COMMAND | You can run a command before starting to run the packages. |  |  |
+| SERVICES | Define packages and their root directories relative to root of the project. [**Has overrides.**](<#(Services-Overrides)>) |  |  |
+| PREFIX_LABEL | Prefixes label to the service name to get distinction. | true |  |
+| RUN_IN_BAND | Run this packages first before running the rest asynchronously. [**Has to match the relative directory of the service.**](<#(Run-In-Band-Overrides)>) |  |  |
+| RUN_IN_BAND_WAIT | Wait for RUN_IN_BAND items to compelete in seconds. | 10 |  |
 
 ## Debug Port
 
